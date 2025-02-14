@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Calculator.Lib;
 using Calculator.ViewModel;
 
 namespace Calculator
@@ -15,20 +16,22 @@ namespace Calculator
             DataContext = vm;
             CreateButtons();
         }
-
+        //wurzel mod. quadrat
         private void CreateButtons()
         {
             Button button;
 
+
             string[,] buttonContent = new string[,]
             {
-                {"7", "8", "9", "/"},
-                {"4", "5", "6", "*"},
-                {"1", "2", "3", "-"},
-                {"C", "0", "=", "+"}
+                { ButtonLabels.Sqr, ButtonLabels.Square, ButtonLabels.Mod, ButtonLabels.Del },
+                { ButtonLabels.Seven, ButtonLabels.Eight, ButtonLabels.Nine, ButtonLabels.Divide },
+                { ButtonLabels.Four, ButtonLabels.Five, ButtonLabels.Six, ButtonLabels.Multiply },
+                { ButtonLabels.One, ButtonLabels.Two, ButtonLabels.Three, ButtonLabels.Minus },
+                { ButtonLabels.Clear, ButtonLabels.Zero, ButtonLabels.Equals, ButtonLabels.Plus }
             };
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
@@ -38,10 +41,14 @@ namespace Calculator
                     Grid.SetColumn(button, j);
                     button.Content = buttonText;
 
-                    if (buttonText == "C")
+                    if (buttonText == ButtonLabels.Clear)
                         button.Click += (sender, e) => vm.ButtonClear();
-                    else if (buttonText == "=")
+                    else if (buttonText == ButtonLabels.Equals)
                         button.Click += (sender, e) => vm.ButtonEquals();
+                    else if (buttonText == ButtonLabels.Del)
+                        button.Click += (sender, e) => vm.ButtonDeleteLast();
+                    else if (buttonText == ButtonLabels.Sqr || buttonText == ButtonLabels.Square)
+                        button.Click += (sender, e) => vm.ButtonSquareAndRoot(buttonText);
                     else
                         button.Click += (sender, e) => vm.ButtonClick(buttonText);
 

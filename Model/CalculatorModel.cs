@@ -1,4 +1,6 @@
-﻿namespace Calculator.Model
+﻿using Calculator.Lib;
+
+namespace Calculator.Model
 {
     internal class CalculatorModel
     {
@@ -6,12 +8,17 @@
         public string Input { get; set; }
         List<string> termSeperatorStart = new List<string>();
         
-        public CalculatorModel(string input)
+        public CalculatorModel(string input, string calculate = "")
         {
             Input = input.Replace(" ", "");
             ListFiller();
-            Calculate();
+            if (calculate == "") 
+                Calculate();
+            else UpdateLastTerm(calculate);
+
         }
+
+
         private void Calculate()
         {
             int countStart = termSeperatorStart.Count;
@@ -28,6 +35,27 @@
             Result = result;
         }
 
+        private void UpdateLastTerm(string operation) 
+        {
+            double updatedTerm = 0;
+            double lastTerm = Convert.ToDouble(termSeperatorStart[termSeperatorStart.Count - 1]);
+            if (operation == "sqr()")
+                updatedTerm = OperatorList.Sqr(lastTerm);
+            switch (operation)
+            {
+                case "sqr()":
+                    updatedTerm = OperatorList.Sqr(lastTerm);
+                    break;
+                case "^2":
+                    updatedTerm = OperatorList.Squ(lastTerm);
+                    break;
+                default:
+                    break;
+            }
+            termSeperatorStart[termSeperatorStart.Count-1] = updatedTerm.ToString();
+
+            Result = string.Join(" ",termSeperatorStart);
+        }
 
         private void ListFiller()
         {
@@ -38,7 +66,7 @@
                 for (int i = 0; i < Input.Length; i++)
                 {
                     string currentChar = Input[i].ToString();
-                    if (OperatorList.Operators.Contains(currentChar))
+                    if (OperatorList.BasicOperators.Contains(currentChar))
                     {
                         termSeperatorStart.Add(k);
                         k = "";
@@ -70,10 +98,11 @@
 
                 tempResult = mathOperator switch
                 {
-                    "+" => Add(num1, num2),
-                    "-" => Sub(num1, num2),
-                    "*" => Mul(num1, num2),
-                    "/" => Div(num1, num2),
+                    "+" => OperatorList.Add(num1, num2),
+                    "-" => OperatorList.Sub(num1, num2),
+                    "*" => OperatorList.Mul(num1, num2),
+                    "/" => OperatorList.Div(num1, num2),
+                    "%" => OperatorList.Mod(num1, num2),
                     _ => throw new NotImplementedException(),
                 };
 
@@ -84,9 +113,6 @@
 
         }
 
-        public double Add(double a, double b) => a + b;
-        public double Sub(double a, double b) => a - b;
-        public double Mul(double a, double b) => a * b;
-        public double Div(double a, double b) => b != 0 ? a / b : double.NaN;
+        
     }
 }
