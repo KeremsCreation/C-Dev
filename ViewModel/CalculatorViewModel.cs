@@ -40,12 +40,11 @@ namespace Calculator.ViewModel
 
         public void ButtonDeleteLast()
         {
-            
             //remover = CalcResult.Length > 1 ? 2 : 1;
             CalcResult = CalcResult.Length > 0 ? CalcResult.Remove(CalcResult.Length - remover) : ""; 
         }
 
-        public void ButtonSquareAndRoot(string buttonText)
+        public void ButtonPower(string buttonText)
         {
             CalculatorModel c = new CalculatorModel(CalcResult, buttonText);
             CalcResult = c.Result.ToString();

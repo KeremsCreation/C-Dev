@@ -9,7 +9,11 @@ namespace Calculator.Lib
 
     class OperatorList
     {
-        public static string[] BasicOperators = [ButtonLabels.Plus, ButtonLabels.Minus, ButtonLabels.Multiply, ButtonLabels.Divide, ButtonLabels.Mod];
+        public static string[] AdditiveOperators = [ButtonLabels.Plus, ButtonLabels.Minus];
+
+        public static string[] MultiplicativeOperators = [ButtonLabels.Multiply, ButtonLabels.Divide, ButtonLabels.Mod];
+
+        public static string[] ArithmeticOperators = AdditiveOperators.Concat(MultiplicativeOperators).ToArray();
         public static double Add(double a, double b) => a + b;
         public static double Sub(double a, double b) => a - b;
         public static double Mul(double a, double b) => a * b;
